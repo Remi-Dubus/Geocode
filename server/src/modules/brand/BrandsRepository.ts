@@ -49,7 +49,7 @@ class BrandsRepository {
       );
       resultSocket = socketResult.insertId;
     }
-    
+
     await databaseClient.query<Result>("SET FOREIGN_KEY_CHECKS=0");
     if (model !== null) {
       if (id_brand < 0 && id_socket < 0) {
