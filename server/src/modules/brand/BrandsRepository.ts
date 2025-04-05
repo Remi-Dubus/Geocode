@@ -50,54 +50,48 @@ class BrandsRepository {
       resultSocket = socketResult.insertId;
     }
 
+    await databaseClient.query<Result>("SET FOREIGN_KEY_CHECKS=0");
     if (model !== null) {
       if (id_brand < 0 && id_socket < 0) {
         //
-        await databaseClient.query<Result>("SET FOREIGN_KEY_CHECKS=0");
         const [modelResult] = await databaseClient.query<Result>(
           "INSERT INTO model (label, brand_id, socket_id) VALUE (?, ?, ?);",
           [model, resultBrand, resultSocket],
         );
-        await databaseClient.query<Result>("SET FOREIGN_KEY_CHECKS=1");
         resultModel = modelResult.insertId;
         //
-      } else if (id_brand < 0 && id_socket >= 0) {
+      } else if (id_brand < 0 && id_socket > 0) {
         //
-        await databaseClient.query<Result>("SET FOREIGN_KEY_CHECKS=0");
         const [modelResult] = await databaseClient.query<Result>(
           "INSERT INTO model (label, brand_id, socket_id) VALUE (?, ?, ?);",
           [model, resultBrand, id_socket],
         );
-        await databaseClient.query<Result>("SET FOREIGN_KEY_CHECKS=1");
         resultModel = modelResult.insertId;
         //
-      } else if (id_brand >= 0 && id_socket < 0) {
+      } else if (id_brand > 0 && id_socket < 0) {
         //
-        await databaseClient.query<Result>("SET FOREIGN_KEY_CHECKS=0");
         const [modelResult] = await databaseClient.query<Result>(
           "INSERT INTO model (label, brand_id, socket_id) VALUE (?, ?, ?);",
           [model, id_brand, resultSocket],
         );
-        await databaseClient.query<Result>("SET FOREIGN_KEY_CHECKS=1");
         resultModel = modelResult.insertId;
         //
-      } else if (id_brand >= 0 && id_socket >= 0) {
+      } else if (id_brand > 0 && id_socket > 0) {
         //
-        await databaseClient.query<Result>("SET FOREIGN_KEY_CHECKS=0");
         const [modelResult] = await databaseClient.query<Result>(
           "INSERT INTO model (label, brand_id, socket_id) VALUE (?, ?, ?);",
           [model, id_brand, id_socket],
         );
-        await databaseClient.query<Result>("SET FOREIGN_KEY_CHECKS=1");
         resultModel = modelResult.insertId;
         //
       }
     }
+    await databaseClient.query<Result>("SET FOREIGN_KEY_CHECKS=1");
 
     return {
-      id_brand: id_brand >= 0 ? id_brand : resultBrand,
-      id_model: id_model >= 0 ? id_model : resultModel,
-      id_socket: id_socket >= 0 ? id_socket : resultSocket,
+      id_brand: id_brand > 0 ? id_brand : resultBrand,
+      id_model: id_model > 0 ? id_model : resultModel,
+      id_socket: id_socket > 0 ? id_socket : resultSocket,
     };
   }
 
