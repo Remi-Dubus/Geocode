@@ -94,6 +94,8 @@ export type ContactModaleProps = {
 };
 
 export type ContactFormProps = {
+  id_model?: number;
+  user_id?: number;
   date: string;
   email: string;
   firstname: string;
